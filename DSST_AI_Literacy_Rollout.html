@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Literacy Program Rollout: Fall 2026–Spring 2030</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: #ffffff;
+    color: #1a1a1a;
+    padding: 2rem;
+    max-width: 960px;
+    margin: 0 auto;
+  }
+
+  h1 {
+    font-size: 17px;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: 6px;
+  }
+
+  .hint {
+    font-size: 12px;
+    color: #888;
+    margin-bottom: 1.25rem;
+  }
+
+  /* Header row */
+  .hdr { display: flex; margin-bottom: 3px; align-items: flex-end; }
+  .lc { width: 100px; flex-shrink: 0; padding-right: 10px; padding-bottom: 5px; display: flex; align-items: flex-end; justify-content: flex-end; }
+  .lc-label { font-size: 10px; font-weight: 600; letter-spacing: .07em; text-transform: uppercase; color: #888; }
+  .yh { flex: 1; display: grid; grid-template-columns: repeat(4, 1fr); }
+  .yh-cell { font-size: 11px; font-weight: 600; color: #555; text-align: center; padding-bottom: 5px; border-left: 1.5px solid #ccc; }
+
+  /* Group rows */
+  .grp { display: flex; border-radius: 8px; margin-bottom: 8px; overflow: hidden; }
+  .gl { width: 100px; flex-shrink: 0; display: flex; align-items: center; justify-content: flex-end; padding: 8px 10px 8px 6px; }
+  .gl span { font-size: 12px; font-weight: 600; }
+  .trks { flex: 1; padding: 5px 0; display: flex; flex-direction: column; gap: 5px; }
+
+  /* Track */
+  .trk { position: relative; height: 28px; }
+  .trbg { position: absolute; inset: 0; display: grid; grid-template-columns: repeat(4, 1fr); }
+  .trc { border-left: 1.5px solid rgba(0,0,0,0.15); }
+
+  /* Bars */
+  .bar {
+    position: absolute; top: 2px; bottom: 2px;
+    border-radius: 5px; cursor: pointer;
+    display: flex; align-items: center;
+    padding: 0 8px; overflow: hidden;
+    transition: filter 0.12s, transform 0.1s;
+  }
+  .bar:hover { filter: brightness(0.88); transform: scaleY(1.07); }
+  .bar.active { outline: 2px solid #1a1a1a; outline-offset: 1px; }
+  .bar span { font-size: 10px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block; width: 100%; }
+  .bar.plan { border-style: dashed; border-width: 1.5px; }
+
+  /* Detail panel */
+  .dp {
+    border: 1px solid #e0e0e0; border-radius: 10px;
+    padding: 1.25rem; margin-top: 1rem;
+    background: #f8f8f8; display: none;
+  }
+  .dp.on { display: block; }
+  .dp-tag { display: inline-block; font-size: 11px; font-weight: 600; padding: 2px 10px; border-radius: 20px; margin-bottom: 8px; }
+  .dp-ttl { font-size: 15px; font-weight: 700; color: #1a1a1a; margin-bottom: 6px; }
+  .dp-desc { font-size: 13px; color: #333; line-height: 1.65; margin-bottom: 10px; }
+  .dp-ul { font-size: 13px; color: #333; line-height: 1.75; padding-left: 1.1rem; }
+  .dp-ul li { margin-bottom: 3px; }
+  .dp-cls {
+    float: right; font-size: 11px; color: #888; cursor: pointer;
+    padding: 3px 8px; border: 1px solid #ddd; border-radius: 4px;
+    background: #fff; font-family: inherit;
+  }
+  .dp-cls:hover { color: #333; }
+</style>
+</head>
+<body>
+
+<h1>AI Literacy Program Rollout: Fall 2026–Spring 2030</h1>
+<p class="hint">Click any bar to see details</p>
+
+<div class="hdr">
+  <div class="lc"><span class="lc-label">AI Theme</span></div>
+  <div class="yh">
+    <div class="yh-cell">Year 1</div>
+    <div class="yh-cell">Year 2</div>
+    <div class="yh-cell">Year 3</div>
+    <div class="yh-cell">Year 4</div>
+  </div>
+</div>
+
+<div id="chart"></div>
+
+<div class="dp" id="dp">
+  <button class="dp-cls" onclick="cls()">close</button>
+  <div id="dp-tag" class="dp-tag"></div>
+  <div id="dp-ttl" class="dp-ttl"></div>
+  <div id="dp-desc" class="dp-desc"></div>
+  <ul id="dp-ul" class="dp-ul"></ul>
+</div>
+
+<script>
+const G = [
+  {
+    label: 'Readiness',
+    bg: '#F5F4FD', border: '#CECBF6', barBg: '#CECBF6', barText: '#3C3489',
+    planBg: '#EEEDFE', planText: '#534AB7', tagBg: '#EEEDFE', tagText: '#3C3489',
+    labelColor: '#3C3489',
+    tracks: [
+      [
+        { label: "Plan/Design", s: 0, e: 0.5, plan: true,
+          title: "Plan/Design — 9th Grade Advisory",
+          desc: "Establish the foundation for a network-wide AI readiness program embedded in 9th grade advisory at 4 pilot high schools. Priorities include building shared vocabulary, co-designing the DSST Ethical Framework with key stakeholders, and aligning to Readiness-tier standards before any structured tool use begins.",
+          bullets: ["Map existing advisory scope & sequence for Readiness-tier integration points", "Co-develop DSST Ethical Framework with SEL team, school leadership, and student voice", "Draft shared AI vocabulary aligned to CEI K–12 AI Progression Guide (Readiness tier)", "Identify advisory teacher cohort and begin onboarding relationships", "Define success metrics with SEL team and school leadership"] },
+        { label: "9th grade · Advisory · 4 HS's", s: 0.5, e: 2,
+          title: "9th Grade Advisory — AI Readiness · 4 High Schools",
+          desc: "Introduce a shared AI vocabulary and the DSST Ethical Framework across 9th grade advisory at 4 high schools. Ground students in foundational Readiness-tier concepts — what AI is, how it learns, and who they are in relation to it — before moving into structured tool use in other courses.",
+          bullets: ["Establish common language: what AI is, narrow vs. general AI, inputs → algorithms → outputs", "Introduce DSST Ethical Framework: fairness, accountability, transparency, and human agency", "Introduce Mirror/Coach/Teammate/Intern modes as a framework for student identity and AI interaction", "Anchor to CEI Readiness milestone: define AI, identify real-world examples, explain why ML requires data", "Collect formative data on student attitudes and prior knowledge"] },
+        { label: "9th grade · Advisory · 6 HS's", s: 2, e: 4,
+          title: "9th Grade Advisory — AI Readiness · Full Network (6 HS's)",
+          desc: "Expand the 9th grade AI readiness advisory curriculum to all 6 DSST high schools, ensuring a consistent common language and shared ethical framework across the full network. Year 1–2 implementation data informs content revisions and new-site onboarding.",
+          bullets: ["Onboard 2 additional schools using Year 1–2 teachers as peer coaches", "Revise DSST Ethical Framework and common language tools based on student outcome data", "Establish cross-school advisory teacher learning community", "Align with expanding 8th grade STEM readiness track in feeder middle schools"] }
+      ],
+      [
+        { label: "Plan/Design", s: 0.5, e: 1, plan: true,
+          title: "Plan/Design — 8th Grade STEM Readiness",
+          desc: "Design AI readiness integration for 8th grade STEM at 4 middle schools, coordinating with STEM content leads to identify instructional entry points grounded in engineering design process and Readiness-tier standards.",
+          bullets: ["Audit 8th grade STEM scope & sequence for Readiness-tier integration opportunities", "Coordinate with DSST STEM content team on unit design", "Draft learning objectives connecting AI concepts to engineering design process", "Develop pilot curriculum units, teacher support materials, and pre/post assessments"] },
+        { label: "8th grade STEM · 4 MS's", s: 1, e: 3,
+          title: "8th Grade STEM AI Readiness — 4 Middle Schools",
+          desc: "Implement AI readiness modules in 8th grade STEM at 4 middle schools, building the conceptual and practical foundation students need before entering high school pathways. Emphasize student agency and critical evaluation — AI as a tool to interrogate, not just use.",
+          bullets: ["Deliver 2-unit sequence: AI/ML foundations + AI as engineering design co-pilot", "Address hallucination detection, data bias, and human responsibility in AI-assisted design", "Frame AI in an adversarial/validating role: students as evaluators, not just consumers", "Collect pre/post data on student AI understanding, attitudes, and ethical reasoning"] },
+        { label: "8th grade STEM · all HS's", s: 3, e: 4,
+          title: "8th Grade STEM Readiness — Full Network Scale",
+          desc: "Extend the 8th grade STEM AI readiness curriculum to all DSST middle schools, establishing a consistent pipeline that feeds into high school pathways across the full network.",
+          bullets: ["Scale curriculum and trained facilitators to all middle schools", "Ensure vertical alignment with 9th grade advisory and subject area tracks", "Embed ongoing teacher learning within STEM department PLCs", "Publish outcomes data to support network-wide and external reporting"] }
+      ]
+    ]
+  },
+  {
+    label: 'Literacy',
+    bg: '#F0FAF6', border: '#9FE1CB', barBg: '#9FE1CB', barText: '#085041',
+    planBg: '#E1F5EE', planText: '#0F6E56', tagBg: '#E1F5EE', tagText: '#085041',
+    labelColor: '#085041',
+    tracks: [
+      [
+        { label: "Plan/Design", s: 0, e: 0.5, plan: true,
+          title: "Plan/Design — Subject Area AI Literacy",
+          desc: "Map AI literacy integration points across 9–12 subject areas and identify a willing pilot teacher cohort. Develop a shared framework for how AI functions as a critic, auditor, and design partner within specific disciplines.",
+          bullets: ["Identify pilot teachers across subject areas (ELA, science, social studies, engineering design)", "Map integration points in existing 9–12 curricula using Mirror/Coach/Teammate/Intern modes", "Develop AI literacy integration framework, lesson templates, and supporting resources", "Align to CDE AI Computer Science Standards and CEI Literacy-tier progression"] },
+        { label: "Grades 9–12 Subject Area Pilots", s: 0.5, e: 1,
+          title: "Grades 9–12 Subject Area Pilots",
+          desc: "Launch targeted AI literacy pilots with willing teachers across subject areas at 4 high schools, embedding AI as a thinking and evaluating tool within existing instructional practice. The goal is replicable models grounded in the AI Sandwich approach and the 3 guiding questions.",
+          bullets: ["Support 6–8 pilot teachers across disciplines with curriculum co-development", "Prioritize AI-as-critic framing: students audit and interrogate AI outputs, not just consume them", "Anchor activities to Literacy-tier standards: training data & bias, algorithmic impact, ethics case studies", "Collect implementation data: fidelity, student engagement, teacher experience"] },
+        { label: "Grades 9–12 Pilots → Coaches · 4 HS's", s: 1, e: 2,
+          title: "Pilots → Coaches: Distributed AI Literacy Leadership",
+          desc: "Transition Year 1 pilot teachers into AI literacy coaches at their schools, building distributed instructional leadership capacity across the network. Expand subject area integration to new teacher cohorts using a train-the-trainer model.",
+          bullets: ["Formalize coaching roles for Year 1 pilot teachers (1–2 per school)", "Develop coach onboarding materials and ongoing support structures", "Expand subject area AI integration to 10–15 additional teachers per school", "Document and evaluate coaching model in preparation for Year 3–4 network scale"] },
+        { label: "8th–12th AI Teams · pilot subject scope & sequence", s: 2, e: 4,
+          title: "AI Teams — Building the 8–12 Scope & Sequence",
+          desc: "Establish cross-school AI Teams composed of teacher-coaches and curriculum leads to collaboratively develop a comprehensive 8–12 AI literacy scope and sequence, grounded in three years of implementation evidence and aligned to CEI and CDE standards across all three tiers.",
+          bullets: ["Convene AI Teams across 6 high schools and feeder middle schools", "Map vertical alignment from 8th grade STEM Readiness through 12th grade Senior Project Fluency", "Publish draft scope & sequence for stakeholder review and feedback", "Position DSST as a replicable model for K–12 AI literacy curriculum in Colorado"] }
+      ],
+      [
+        { label: "Plan/Design", s: 0.5, e: 1, plan: true,
+          title: "Plan/Design — 10th Grade Civics AI Integration",
+          desc: "Design an AI literacy unit for 10th grade Civics grounded in Literacy-tier standards: data bias, algorithmic accountability, AI in democratic society. Coordinate with social studies content leads to connect AI ethics to existing civic education frameworks.",
+          bullets: ["Map AI ethics learning objectives to Civics standards (civic knowledge, values, participation)", "Draft unit outline: dataset bias & fairness, algorithmic decision-making, AI in government and media", "Identify Civics teacher pilot cohort (1–2 per school)", "Develop assessments that position students as AI accountability auditors — citizens, not just users"] },
+        { label: "10th grade Civics · 4 HS's", s: 1, e: 2,
+          title: "10th Grade Civics — AI Ethics & Society · 4 Schools",
+          desc: "Implement the AI ethics and society unit in 10th grade Civics at 4 high schools. Students analyze AI systems as citizens — developing the critical and ethical reasoning aligned to CEI Literacy-tier milestones and Colorado's 9–12 AI standards.",
+          bullets: ["Deliver unit across 10th grade Civics sections at 4 schools", "Topics: data bias, algorithmic accountability, AI in government and media, environmental and equity implications", "Use adversarial framing: students as AI auditors evaluating real-world systems", "Collect pre/post data on student AI ethics understanding and civic agency"] },
+        { label: "10th grade Civics · all HS's", s: 2, e: 4,
+          title: "10th Grade Civics — Full Network Scale",
+          desc: "Expand the AI ethics and society Civics unit to all 6 DSST high schools, updating content with Year 2 data and evolving AI policy developments. Integrate with the 8–12 scope & sequence produced by AI Teams.",
+          bullets: ["Scale to all 6 DSST high schools with trained Civics teachers", "Update curriculum to reflect current AI policy, tools, and Year 2 student outcome data", "Align to 8–12 scope & sequence produced by AI Teams", "Document and share outcomes for external publication and Floranova portfolio"] }
+      ]
+    ]
+  },
+  {
+    label: 'Fluency',
+    bg: '#FEFAF2', border: '#FAC775', barBg: '#FAC775', barText: '#633806',
+    planBg: '#FAEEDA', planText: '#854F0B', tagBg: '#FAEEDA', tagText: '#633806',
+    labelColor: '#633806',
+    tracks: [
+      [
+        { label: "Plan/Design", s: 0, e: 0.5, plan: true,
+          title: "Plan/Design — 12th Grade Senior Project AI Integration",
+          desc: "Design AI integration for the 12th grade Senior Project, identifying how AI tools can support authentic student-driven inquiry while building the supervisory and evaluative competencies that define Fluency-tier outcomes.",
+          bullets: ["Audit existing Senior Project structure at 4 schools for AI integration points", "Co-develop integration plan with Senior Project coordinators and 12th grade teachers", "Frame AI tool use through Mirror/Coach/Teammate/Intern modes across project phases", "Develop rubrics that assess quality of AI engagement and ethical reasoning, not just project output"] },
+        { label: "12th grade Senior Project · 4 HS's", s: 0.5, e: 2,
+          title: "12th Grade Senior Project — AI as Design Partner · 4 Schools",
+          desc: "Integrate structured AI fluency into the 12th grade Senior Project at 4 DSST high schools. Students use AI tools purposefully across research, design, and presentation phases — and document their reasoning, developing the supervisory competencies that define genuine Fluency.",
+          bullets: ["Introduce Mirror/Coach/Teammate/Intern modes at project launch", "Coach students to document and reflect on AI use decisions throughout the project", "Assess quality of AI engagement and ethical reasoning, not just final product", "Collect student work samples and reflection data as Fluency-tier evidence for program evaluation"] },
+        { label: "12th grade Senior Project · all HS's", s: 2, e: 4,
+          title: "12th Grade Senior Project — Full Network Scale",
+          desc: "Expand the AI-integrated Senior Project to all 6 DSST high schools, establishing it as the capstone Fluency demonstration for the full 8–12 AI literacy pathway and the summative artifact of each student's four-year journey.",
+          bullets: ["Scale to all 6 high schools with trained Senior Project coaches", "Align rubrics and expectations across the full network", "Position the Senior Project as the summative capstone of the 8–12 AI pathway: Readiness → Literacy → Fluency", "Document student outcomes for external audiences, conference presentations, and Floranova portfolio"] }
+      ]
+    ]
+  }
+];
+
+let activeEl = null;
+
+function pL(s) { return 'calc(' + Math.round(s / 4 * 10000) / 100 + '% + 1px)'; }
+function pW(s, e) { return 'calc(' + Math.round((e - s) / 4 * 10000) / 100 + '% - 2px)'; }
+
+function show(bar, grp, id) {
+  const dp = document.getElementById('dp');
+  const tag = document.getElementById('dp-tag');
+  tag.textContent = grp.label;
+  tag.style.background = grp.tagBg;
+  tag.style.color = grp.tagText;
+  document.getElementById('dp-ttl').textContent = bar.title || bar.label;
+  document.getElementById('dp-desc').textContent = bar.desc || '';
+  const ul = document.getElementById('dp-ul');
+  ul.innerHTML = (bar.bullets || []).map(b => '<li>' + b + '</li>').join('');
+  dp.classList.add('on');
+  if (activeEl) activeEl.classList.remove('active');
+  activeEl = document.getElementById(id);
+  if (activeEl) activeEl.classList.add('active');
+  dp.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function cls() {
+  document.getElementById('dp').classList.remove('on');
+  if (activeEl) activeEl.classList.remove('active');
+  activeEl = null;
+}
+
+const chart = document.getElementById('chart');
+
+G.forEach((grp, gi) => {
+  const grpDiv = document.createElement('div');
+  grpDiv.className = 'grp';
+  grpDiv.style.cssText = 'background:' + grp.bg + ';border:1px solid ' + grp.border + ';';
+
+  const gl = document.createElement('div');
+  gl.className = 'gl';
+  const lbl = document.createElement('span');
+  lbl.textContent = grp.label;
+  lbl.style.color = grp.labelColor;
+  gl.appendChild(lbl);
+  grpDiv.appendChild(gl);
+
+  const trks = document.createElement('div');
+  trks.className = 'trks';
+
+  grp.tracks.forEach((track, ti) => {
+    const trk = document.createElement('div');
+    trk.className = 'trk';
+    const bg = document.createElement('div');
+    bg.className = 'trbg';
+    for (let i = 0; i < 4; i++) {
+      const c = document.createElement('div');
+      c.className = 'trc';
+      bg.appendChild(c);
+    }
+    trk.appendChild(bg);
+
+    track.forEach((bar, bi) => {
+      const id = 'b-' + gi + '-' + ti + '-' + bi;
+      const el = document.createElement('div');
+      el.className = 'bar' + (bar.plan ? ' plan' : '');
+      el.id = id;
+      el.style.left = pL(bar.s);
+      el.style.width = pW(bar.s, bar.e);
+      el.style.background = bar.plan ? (grp.planBg || grp.barBg) : grp.barBg;
+      if (bar.plan) el.style.borderColor = grp.planText || grp.barText;
+      const lbl = document.createElement('span');
+      lbl.textContent = bar.label;
+      lbl.style.color = bar.plan ? (grp.planText || grp.barText) : grp.barText;
+      el.appendChild(lbl);
+      el.onclick = () => show(bar, grp, id);
+      trk.appendChild(el);
+    });
+
+    trks.appendChild(trk);
+  });
+
+  grpDiv.appendChild(trks);
+  chart.appendChild(grpDiv);
+});
+</script>
+</body>
+</html>
